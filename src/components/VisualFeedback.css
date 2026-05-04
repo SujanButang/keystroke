@@ -1,0 +1,102 @@
+.visual-feedback {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* --- Ripple --- */
+.ripple-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0;
+}
+
+.ripple-container.animate .ripple {
+  animation: rippleOut 1.2s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+
+.ripple-container.animate .r1 { animation-delay: 0s; width: 40px; height: 40px; }
+.ripple-container.animate .r2 { animation-delay: 0.15s; width: 40px; height: 40px; }
+.ripple-container.animate .r3 { animation-delay: 0.3s; width: 40px; height: 40px; }
+
+@keyframes rippleOut {
+  0%   { opacity: 0.8; transform: scale(1); }
+  100% { opacity: 0; transform: scale(3.5); }
+}
+
+/* --- Bars --- */
+.bars-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 60px;
+}
+
+.bar {
+  width: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+  height: 6px;
+  opacity: 0.3;
+  transition: height 0.1s ease;
+}
+
+.bars-container.playing .bar {
+  opacity: 1;
+  animation: barBounce 0.6s ease infinite alternate;
+}
+
+@keyframes barBounce {
+  from { height: 6px; }
+  to   { height: calc(20px + var(--rand, 30px)); }
+}
+
+.bars-container.playing .bar:nth-child(odd)  { --rand: 24px; }
+.bars-container.playing .bar:nth-child(even) { --rand: 40px; }
+.bars-container.playing .bar:nth-child(3n)   { --rand: 16px; }
+.bars-container.playing .bar:nth-child(4n)   { --rand: 48px; }
+
+/* --- Particles --- */
+.particles-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  top: 50%; left: 50%;
+  opacity: 0;
+}
+
+.particles-container.burst .particle {
+  animation: particleFly 0.9s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+  animation-delay: calc(var(--i) * 0.04s);
+}
+
+@keyframes particleFly {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% {
+    opacity: 0;
+    transform: translate(
+      calc(-50% + cos(calc(var(--i) * 36deg)) * 50px),
+      calc(-50% + sin(calc(var(--i) * 36deg)) * 50px)
+    ) scale(0.3);
+  }
+}

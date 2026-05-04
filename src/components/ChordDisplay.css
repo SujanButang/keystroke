@@ -1,0 +1,95 @@
+.chord-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.chord-name-wrap {
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chord-name {
+  font-family: var(--font-display);
+  font-size: clamp(60px, 9vw, 104px);
+  font-weight: 800;
+  color: var(--text-heading);
+  letter-spacing: -3px;
+  line-height: 1;
+  animation: chordIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition: color 0.1s, text-shadow 0.15s;
+}
+
+.chord-name.playing {
+  color: #fff;
+  text-shadow: 0 0 40px rgba(79, 247, 192, 0.5), 0 0 80px rgba(79, 247, 192, 0.2);
+}
+
+@keyframes chordIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.chord-placeholder {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--border-bright);
+  letter-spacing: 0.04em;
+}
+
+.input-buffer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 7px 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input-buffer.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.buffer-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text);
+}
+
+.buffer-value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-bright);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 30px;
+}
+
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  background: var(--accent);
+  border-radius: 1px;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

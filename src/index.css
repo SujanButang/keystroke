@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #080b12;
+  --bg-panel: #0e1219;
+  --bg-surface: #141820;
+  --border: #1e2433;
+  --border-bright: #2a3347;
+  --text: #8892a4;
+  --text-bright: #c8d0dc;
+  --text-heading: #eef1f6;
+  --accent: #4ff7c0;
+  --accent-dim: rgba(79, 247, 192, 0.12);
+  --accent-glow: rgba(79, 247, 192, 0.35);
+  --accent2: #7b6cff;
+  --accent2-dim: rgba(123, 108, 255, 0.12);
+  --danger: #ff6b6b;
+
+  --key-white: #dde3ee;
+  --key-white-active: #4ff7c0;
+  --key-black: #0d1017;
+  --key-black-active: #4ff7c0;
+
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+}

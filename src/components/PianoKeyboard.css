@@ -1,0 +1,73 @@
+.piano-wrapper {
+  width: 100%;
+  background: linear-gradient(to bottom, var(--bg-surface), var(--bg-panel));
+  border-top: 1px solid var(--border);
+  padding: 20px 0 0;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.piano-keyboard {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.piano-key {
+  position: absolute;
+  top: 0;
+  border-radius: 0 0 6px 6px;
+  cursor: pointer;
+  transition: background 0.08s, box-shadow 0.08s;
+}
+
+.piano-key.white {
+  background: var(--key-white);
+  border: 1px solid #aab0bf;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.piano-key.white:hover {
+  background: #eef1f8;
+}
+
+.piano-key.white.active {
+  background: var(--key-white-active);
+  box-shadow: 0 0 18px var(--accent-glow), 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.piano-key.black {
+  background: var(--key-black);
+  border: 1px solid #000;
+  border-top: none;
+  z-index: 2;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.7);
+}
+
+.piano-key.black:hover {
+  background: #1a2030;
+}
+
+.piano-key.black.active {
+  background: var(--key-black-active);
+  box-shadow: 0 0 14px var(--accent-glow), 0 5px 12px rgba(0, 0, 0, 0.7);
+}
+
+.key-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #8892a4;
+  opacity: 0.5;
+  user-select: none;
+}
+
+.piano-key.white.active .key-label {
+  color: var(--bg);
+  opacity: 0.8;
+}
