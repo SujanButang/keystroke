@@ -1,0 +1,96 @@
+/* ============================================================
+   ChordSheetPanel — edit-only slide-in from left
+   ============================================================ */
+
+.chord-sheet-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 100vh;
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border);
+  z-index: 20;
+
+  display: flex;
+  flex-direction: column;
+
+  transform: translateX(-100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.chord-sheet-panel.open {
+  transform: translateX(0);
+}
+
+/* ---- Header ---- */
+
+.cs-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.cs-panel-header h2 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-heading);
+  letter-spacing: -0.2px;
+}
+
+/* ---- Textarea ---- */
+
+.cs-input-area {
+  padding: 20px 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cs-textarea {
+  flex: 1;
+  resize: none;
+
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-bright);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+
+  outline: none;
+  transition: border-color 0.15s;
+  caret-color: var(--accent);
+}
+
+.cs-textarea::placeholder {
+  color: var(--text);
+  opacity: 0.45;
+  white-space: pre;
+}
+
+.cs-textarea:focus {
+  border-color: var(--border-bright);
+  box-shadow: 0 0 0 2px var(--accent-dim);
+}
+
+/* ---- Live hint ---- */
+
+.cs-live-hint {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  opacity: 0.6;
+  padding: 10px 24px 16px;
+  text-align: center;
+  flex-shrink: 0;
+}

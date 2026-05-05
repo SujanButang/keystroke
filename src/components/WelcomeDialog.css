@@ -1,0 +1,340 @@
+/* ============================================================
+   WelcomeDialog — first-load onboarding modal
+   ============================================================ */
+
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 6, 10, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: overlayFadeIn 0.3s ease both;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.welcome-dialog {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-bright);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(79, 247, 192, 0.06);
+  animation: dialogIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-bright) transparent;
+}
+
+.welcome-dialog::-webkit-scrollbar { width: 5px; }
+.welcome-dialog::-webkit-scrollbar-track { background: transparent; }
+.welcome-dialog::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+
+@keyframes dialogIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Header ── */
+
+.wd-header {
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.wd-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wd-logo-mark {
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  color: #080b12;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wd-logo-text {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-heading);
+  letter-spacing: -0.4px;
+}
+
+.wd-tagline {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* ── Body ── */
+
+.wd-body {
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wd-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wd-section-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Key binding rows */
+.wd-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wd-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background 0.1s;
+}
+
+.wd-row:hover {
+  background: var(--bg-surface);
+}
+
+.wd-keys {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.wd-sep {
+  font-size: 11px;
+  color: var(--text);
+  margin: 0 1px;
+}
+
+.wd-desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-bright);
+  text-align: right;
+}
+
+kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid rgba(79, 247, 192, 0.2);
+  padding: 2px 7px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+kbd.mod {
+  color: var(--accent2);
+  background: var(--accent2-dim);
+  border-color: rgba(123, 108, 255, 0.2);
+}
+
+kbd.ctrl {
+  color: #f0a04b;
+  background: rgba(240, 160, 75, 0.1);
+  border-color: rgba(240, 160, 75, 0.2);
+}
+
+kbd.ctrl.mod {
+  color: #e07acc;
+  background: rgba(224, 122, 204, 0.1);
+  border-color: rgba(224, 122, 204, 0.2);
+}
+
+.wd-tip {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.6;
+  padding: 8px 10px;
+  background: var(--bg-surface);
+  border-radius: 8px;
+  border-left: 2px solid var(--border-bright);
+}
+
+.wd-tip kbd {
+  font-size: 10px;
+  padding: 1px 5px;
+}
+
+/* Divider */
+.wd-divider {
+  height: 1px;
+  background: var(--border);
+}
+
+/* Two-column layout */
+.wd-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* Prose + lists */
+.wd-prose {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-bright);
+  line-height: 1.6;
+}
+
+.wd-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0;
+}
+
+.wd-list li {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-bright);
+  line-height: 1.5;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.wd-list--plain li {
+  padding-left: 10px;
+  position: relative;
+}
+
+.wd-list--plain li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.wd-list--plain strong {
+  color: var(--text-heading);
+  font-weight: 500;
+}
+
+.wd-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent2);
+  background: var(--accent2-dim);
+  border: 1px solid rgba(123, 108, 255, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.wd-icon-ref {
+  color: var(--accent);
+  font-style: normal;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-bright);
+  background: var(--bg-surface);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* ── Footer ── */
+
+.wd-footer {
+  padding: 16px 32px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+.wd-start-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #080b12;
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+
+.wd-start-btn:hover {
+  background: #6fffd4;
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.wd-start-btn:active {
+  transform: scale(0.97);
+}
+
+.wd-skip-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.15s;
+}
+
+.wd-skip-btn:hover {
+  color: var(--text-bright);
+}

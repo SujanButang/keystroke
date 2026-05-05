@@ -8,7 +8,7 @@ function getChordMidi(root, isMinor, transpose = 0) {
   const rootSemi = NOTE_SEMITONES[root]
   if (rootSemi === undefined) return null
   const third = isMinor ? 3 : 4
-  const rootMidi = 48 + rootSemi + transpose // C3 = 48
+  const rootMidi = 48 + rootSemi + transpose
   return [rootMidi, rootMidi + 12 + third, rootMidi + 12 + 7]
 }
 
@@ -31,27 +31,36 @@ export function useAudio() {
   const reverbRef = useRef(null)
   const dryGainRef = useRef(null)
   const wetGainRef = useRef(null)
+  const compressorRef = useRef(null)
   const activeGainsRef = useRef([])
+  const activeOscsRef = useRef([])
 
   function ensureReverb() {
     const ctx = getAudioContext()
     if (reverbRef.current) return ctx
 
+    // Limiter/compressor at the final output prevents clipping from loud presets
+    const compressor = ctx.createDynamicsCompressor()
+    compressor.threshold.value = -14
+    compressor.knee.value = 8
+    compressor.ratio.value = 5
+    compressor.attack.value = 0.003
+    compressor.release.value = 0.12
+    compressorRef.current = compressor
+    compressor.connect(ctx.destination)
+
     const convolver = ctx.createConvolver()
     convolver.buffer = buildImpulse(ctx)
     reverbRef.current = convolver
-
     const dryGain = ctx.createGain()
     dryGain.gain.value = 1
     dryGainRef.current = dryGain
-
     const wetGain = ctx.createGain()
     wetGain.gain.value = 0.3
     wetGainRef.current = wetGain
-
     convolver.connect(wetGain)
-    wetGain.connect(ctx.destination)
-    dryGain.connect(ctx.destination)
+    wetGain.connect(compressor)
+    dryGain.connect(compressor)
     return ctx
   }
 
@@ -72,7 +81,11 @@ export function useAudio() {
     osc.stop(now + 0.6)
   }, [])
 
-  const playChord = useCallback((root, isMinor, { sustain = 1.0, release = 0.8, reverb = 0.3, transpose = 0, preset = 'pad' } = {}) => {
+  // hold=true: skip scheduled release — caller must call releaseChord()
+  const playChord = useCallback((root, isMinor, {
+    sustain = 1.0, release = 0.8, reverb = 0.3,
+    transpose = 0, preset = 'pad', hold = false,
+  } = {}) => {
     const ctx = ensureReverb()
     wetGainRef.current.gain.value = reverb
     dryGainRef.current.gain.value = 1 - reverb * 0.5
@@ -81,19 +94,23 @@ export function useAudio() {
     if (!midiNotes) return
 
     const p = PRESETS[preset] ?? PRESETS.pad
+    const gainMult = p.gainMult ?? 1.0
     const now = ctx.currentTime
 
     // Fade out previous notes
     activeGainsRef.current.forEach(g => {
       g.gain.cancelScheduledValues(now)
       g.gain.setValueAtTime(g.gain.value, now)
-      g.gain.exponentialRampToValueAtTime(0.001, now + 0.08)
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.06)
+    })
+    activeOscsRef.current.forEach(o => {
+      try { o.stop(now + 0.1) } catch { /* already stopped */ }
     })
     activeGainsRef.current = []
+    activeOscsRef.current = []
 
     midiNotes.forEach((midi, i) => {
       const freq = midiToFreq(midi)
-
       const osc1 = ctx.createOscillator()
       const osc2 = ctx.createOscillator()
       osc1.type = p.osc1Type
@@ -109,13 +126,16 @@ export function useAudio() {
       filter.Q.value = p.filterQ
 
       const gain = ctx.createGain()
-      const vol = i === 0 ? 0.38 : 0.24
+      const vol = (i === 0 ? 0.38 : 0.24) * gainMult
 
       gain.gain.setValueAtTime(0, now)
       gain.gain.linearRampToValueAtTime(vol, now + p.attack)
       gain.gain.exponentialRampToValueAtTime(p.sustainLevel * vol, now + p.attack + p.decay)
-      gain.gain.setValueAtTime(p.sustainLevel * vol, now + sustain)
-      gain.gain.exponentialRampToValueAtTime(0.001, now + sustain + release)
+
+      if (!hold) {
+        gain.gain.setValueAtTime(p.sustainLevel * vol, now + sustain)
+        gain.gain.exponentialRampToValueAtTime(0.001, now + sustain + release)
+      }
 
       osc1.connect(filter)
       osc2.connect(filter)
@@ -123,13 +143,29 @@ export function useAudio() {
       gain.connect(dryGainRef.current)
       gain.connect(reverbRef.current)
 
+      const stopAt = hold ? now + 120 : now + sustain + release + 0.1
       osc1.start(now); osc2.start(now)
-      osc1.stop(now + sustain + release + 0.1)
-      osc2.stop(now + sustain + release + 0.1)
+      osc1.stop(stopAt); osc2.stop(stopAt)
 
       activeGainsRef.current.push(gain)
+      activeOscsRef.current.push(osc1, osc2)
     })
   }, [])
 
-  return { playChord, playReadyTone, loading: false }
+  // Trigger release on currently held chord
+  const releaseChord = useCallback((release = 0.8) => {
+    const ctx = getAudioContext()
+    const now = ctx.currentTime
+    activeGainsRef.current.forEach(g => {
+      g.gain.cancelScheduledValues(now)
+      g.gain.setValueAtTime(g.gain.value, now)
+      g.gain.exponentialRampToValueAtTime(0.001, now + release)
+    })
+    const oscs = activeOscsRef.current
+    activeGainsRef.current = []
+    activeOscsRef.current = []
+    setTimeout(() => oscs.forEach(o => { try { o.stop() } catch { /* already stopped */ } }), (release + 0.1) * 1000)
+  }, [])
+
+  return { playChord, releaseChord, playReadyTone, loading: false }
 }

@@ -1,0 +1,106 @@
+.autoscroll-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  height: 48px;
+  padding: 0 4px 0 0;
+}
+
+.autoscroll-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 100%;
+  color: var(--text);
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.autoscroll-btn:hover {
+  color: var(--text-bright);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.autoscroll-ctrl.active .autoscroll-btn {
+  color: var(--accent);
+}
+
+.autoscroll-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text);
+  padding: 0 8px 0 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.autoscroll-ctrl.active .autoscroll-label {
+  color: var(--accent);
+}
+
+/* Range slider */
+.autoscroll-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 72px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border-bright);
+  outline: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.autoscroll-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--text-bright);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.autoscroll-ctrl.active .autoscroll-slider::-webkit-slider-thumb {
+  background: var(--accent);
+}
+
+.autoscroll-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.autoscroll-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: none;
+  border-radius: 50%;
+  background: var(--text-bright);
+  cursor: pointer;
+}
+
+.autoscroll-ctrl.active .autoscroll-slider::-moz-range-thumb {
+  background: var(--accent);
+}
+
+.autoscroll-speed {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text);
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.autoscroll-ctrl.active .autoscroll-speed {
+  color: var(--accent);
+}

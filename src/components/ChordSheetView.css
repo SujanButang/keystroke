@@ -1,0 +1,149 @@
+/* ============================================================
+   ChordSheetView — inline content rendering on the main screen
+   ============================================================ */
+
+.csv-root {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ============================================================
+   Section
+   ============================================================ */
+
+.cs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cs-section-header {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+
+.cs-section-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ============================================================
+   Individual lines
+   ============================================================ */
+
+.cs-line {
+  min-height: 1.15em;
+}
+
+.cs-line--empty {
+  height: 0.75em;
+}
+
+.cs-line--lyric {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-bright);
+  padding: 1px 0;
+  white-space: pre-wrap;
+}
+
+.cs-line--chord-only {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.cs-line--chord-lyric {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  column-gap: 0;
+  row-gap: 2px;
+  padding: 2px 0;
+}
+
+/* ============================================================
+   Chord-lyric segment
+   ============================================================ */
+
+.cs-segment {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  white-space: pre;
+}
+
+.cs-segment-chord {
+  min-height: 22px;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 1px;
+}
+
+.cs-segment-chord-spacer {
+  display: inline-block;
+  height: 20px;
+  width: 0;
+}
+
+.cs-segment-lyric {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-bright);
+}
+
+/* ============================================================
+   Chord buttons
+   ============================================================ */
+
+.cs-chord-btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid rgba(79, 247, 192, 0.18);
+  border-radius: 5px;
+  padding: 2px 7px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s, box-shadow 0.12s;
+}
+
+.cs-chord-btn:hover {
+  background: rgba(79, 247, 192, 0.22);
+  border-color: rgba(79, 247, 192, 0.45);
+  color: var(--text-heading);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.cs-chord-btn:active {
+  background: rgba(79, 247, 192, 0.35);
+  box-shadow: 0 0 14px var(--accent-glow);
+  transform: scale(0.95);
+}
+
+.cs-chord-btn--unknown {
+  color: var(--text);
+  background: var(--bg-surface);
+  border-color: var(--border);
+}
+
+.cs-chord-btn--unknown:hover {
+  color: var(--text-bright);
+  border-color: var(--border-bright);
+  box-shadow: none;
+}

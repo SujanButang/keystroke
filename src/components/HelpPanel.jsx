@@ -1,22 +1,21 @@
 import './HelpPanel.css'
 
+const CONTROLS = [
+  { keys: ['A–G'], label: 'Major chord' },
+  { keys: ['Shift', 'A–G'], label: 'Minor chord' },
+  { keys: ['Ctrl', 'A–G'], label: 'Sharp major' },
+  { keys: ['Ctrl', 'Shift', 'A–G'], label: 'Sharp minor' },
+  { keys: ['Hold key'], label: 'Sustain chord' },
+]
+
 const CHORD_REFS = [
-  { input: 'c', label: 'C major' },
-  { input: 'cm', label: 'C minor' },
-  { input: 'cs', label: 'C# major' },
-  { input: 'csm', label: 'C# minor' },
-  { input: 'd', label: 'D major' },
-  { input: 'dm', label: 'D minor' },
-  { input: 'e', label: 'E major' },
-  { input: 'em', label: 'E minor' },
-  { input: 'f', label: 'F major' },
-  { input: 'fm', label: 'F minor' },
-  { input: 'g', label: 'G major' },
-  { input: 'gm', label: 'G minor' },
-  { input: 'a', label: 'A major' },
-  { input: 'am', label: 'A minor' },
-  { input: 'b', label: 'B major' },
-  { input: 'bm', label: 'B minor' },
+  { key: 'C', sharp: true },
+  { key: 'D', sharp: true },
+  { key: 'E', sharp: false },
+  { key: 'F', sharp: true },
+  { key: 'G', sharp: true },
+  { key: 'A', sharp: true },
+  { key: 'B', sharp: false },
 ]
 
 export default function HelpPanel({ isOpen, onClose }) {
@@ -32,18 +31,40 @@ export default function HelpPanel({ isOpen, onClose }) {
             </svg>
           </button>
         </div>
-        <p className="panel-hint">Type these keys to play chords. 400ms debounce.</p>
-        <div className="chord-grid">
-          {CHORD_REFS.map(({ input, label }) => (
-            <div key={input} className="chord-ref-row">
-              <kbd>{input}</kbd>
+
+        <section className="help-section">
+          <h3>Controls</h3>
+          {CONTROLS.map(({ keys, label }) => (
+            <div key={label} className="chord-ref-row">
+              <div className="key-combo">
+                {keys.map((k, i) => <kbd key={i}>{k}</kbd>)}
+              </div>
               <span>{label}</span>
             </div>
           ))}
-        </div>
-        <div className="panel-tip">
-          <strong>Tip:</strong> Modifier keys (ctrl, alt, cmd) are ignored.
-        </div>
+        </section>
+
+        <section className="help-section">
+          <h3>Notes</h3>
+          <div className="chord-grid">
+            {CHORD_REFS.map(({ key, sharp }) => (
+              <div key={key} className="note-row">
+                <div className="note-variants">
+                  <kbd>{key}</kbd>
+                  <span className="note-label">major</span>
+                  <kbd className="mod">Shift+{key}</kbd>
+                  <span className="note-label">minor</span>
+                  {sharp && <>
+                    <kbd className="ctrl">Ctrl+{key}</kbd>
+                    <span className="note-label">{key}♯ major</span>
+                    <kbd className="ctrl mod">Ctrl+Shift+{key}</kbd>
+                    <span className="note-label">{key}♯ minor</span>
+                  </>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </aside>
     </>
   )

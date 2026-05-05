@@ -15,9 +15,12 @@ export default function TransposeControl({ value, onChange }) {
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
       </div>
-      {value !== 0 && (
-        <button className="transpose-reset" onClick={() => onChange(0)}>reset</button>
-      )}
+      <button
+        className="transpose-reset"
+        onClick={() => onChange(0)}
+        style={{ visibility: value !== 0 ? 'visible' : 'hidden' }}
+        tabIndex={value !== 0 ? 0 : -1}
+      >reset</button>
     </div>
   )
 }
